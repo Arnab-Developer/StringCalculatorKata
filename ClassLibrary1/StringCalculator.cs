@@ -14,8 +14,7 @@ namespace ClassLibrary1
             {
                 return int.Parse(numbers);
             }
-            string [] nums = numbers.Split(',');
-            return int.Parse(nums[0]) + int.Parse(nums[1]);
+            return numbers.Split(',').Select(num => int.Parse(num)).Sum();
         }
     }
 }
