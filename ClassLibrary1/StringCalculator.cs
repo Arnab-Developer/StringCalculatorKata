@@ -15,29 +15,42 @@ namespace ClassLibrary1
             {
                 return 0;
             }
-            CheckNegative(numbers);
-            IList<string> nums = Regex.Matches(numbers, @"-?[0-9]+")
-                .Select(match => match.Value)
-                .ToList();
+
+            IList<int> nums = GetNumsFromString(numbers);
+
+            if (nums.Count == 0)
+            {
+                throw new ArgumentException($"Invalid format {numbers}");
+            }
+
+            CheckNegative(nums);
+
             if (nums.Count == 1)
             {
-                return int.Parse(nums[0]);
+                return nums[0];
             }
+
             return nums
-                .Where(num => int.Parse(num) <= _upperNumLimit)
-                .Select(num => int.Parse(num))
+                .Where(num => num <= _upperNumLimit)
                 .Sum();
         }
 
-        private static void CheckNegative(string numbers)
+        private IList<int> GetNumsFromString(string numbers)
         {
-            List<string> negativeNums = Regex.Matches(numbers, @"-[0-9]+")
-                .Select(match => match.Value)
+            return Regex.Matches(numbers, @"-?[0-9]+")
+                .Select(match => int.Parse(match.Value))
                 .ToList();
+        }
+
+        private void CheckNegative(IList<int> nums)
+        {
             string joinedNegetiveNumbers = string.Empty;
-            foreach (string negativeNum in negativeNums)
+            foreach (int negativeNum in nums)
             {
-                joinedNegetiveNumbers = string.Concat(joinedNegetiveNumbers, negativeNum, ',');
+                if (negativeNum < 0)
+                {
+                    joinedNegetiveNumbers = string.Concat(joinedNegetiveNumbers, negativeNum, ',');
+                }
             }
             if (!string.IsNullOrEmpty(joinedNegetiveNumbers))
             {

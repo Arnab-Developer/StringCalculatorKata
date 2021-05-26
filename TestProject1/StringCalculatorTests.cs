@@ -28,6 +28,13 @@ namespace TestProject1
         }
 
         [Fact]
+        public void CanThrowExceptionForInvalidData()
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(() => _stringCalculator.Add("sfdfsdf"));
+            Assert.Equal("Invalid format sfdfsdf", ex.Message);
+        }
+
+        [Fact]
         public void CanSumTwoNumsSeparatedWithComma()
         {
             int sum = _stringCalculator.Add("2,4");
@@ -63,6 +70,7 @@ namespace TestProject1
         [Theory]
         [InlineData("-1,2", "Negatives not allowed: -1")]
         [InlineData("2,-4,3,-5", "Negatives not allowed: -4,-5")]
+        [InlineData("-53", "Negatives not allowed: -53")]
         public void CanThrowExceptionForNegetiveNumber(string numbers, string expectedExceptionMessage)
         {
             ArgumentException ex = Assert.Throws<ArgumentException>(() => _stringCalculator.Add(numbers));
