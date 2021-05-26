@@ -10,11 +10,11 @@ namespace ClassLibrary1
             {
                 return 0;
             }
-            if (!numbers.Contains(','))
+            if (!numbers.Contains(',') && !numbers.Contains('\n'))
             {
                 return int.Parse(numbers);
             }
-            return numbers.Split(',').Select(num => int.Parse(num)).Sum();
+            return numbers.Split(',', '\n').Select(num => int.Parse(num)).Sum();
         }
     }
 }
