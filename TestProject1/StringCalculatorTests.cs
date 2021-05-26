@@ -1,5 +1,6 @@
 using Xunit;
 using ClassLibrary1;
+using System;
 
 namespace TestProject1
 {
@@ -57,6 +58,15 @@ namespace TestProject1
         {
             int sum = _stringCalculator.Add("//;\n1;2");
             Assert.Equal(3, sum);
-        }        
+        }
+
+        [Theory]
+        [InlineData("-1,2", "Negatives not allowed: -1")]
+        [InlineData("2,-4,3,-5", "Negatives not allowed: -4,-5")]
+        public void CanThrowExceptionForNegetiveNumber(string numbers, string expectedExceptionMessage)
+        {
+            ArgumentException ex = Assert.Throws<ArgumentException>(() => _stringCalculator.Add(numbers));
+            Assert.Equal(expectedExceptionMessage, ex.Message);
+        }
     }
 }
