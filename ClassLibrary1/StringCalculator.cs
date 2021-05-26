@@ -35,12 +35,10 @@ namespace ClassLibrary1
                 .Sum();
         }
 
-        private IList<int> GetNumsFromString(string numbers)
-        {
-            return Regex.Matches(numbers, @"-?[0-9]+")
+        private IList<int> GetNumsFromString(string numbers) =>
+            Regex.Matches(numbers, @"-?[0-9]+")
                 .Select(match => int.Parse(match.Value))
                 .ToList();
-        }
 
         private void CheckNegative(IList<int> nums)
         {
