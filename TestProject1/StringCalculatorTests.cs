@@ -68,5 +68,12 @@ namespace TestProject1
             ArgumentException ex = Assert.Throws<ArgumentException>(() => _stringCalculator.Add(numbers));
             Assert.Equal(expectedExceptionMessage, ex.Message);
         }
+
+        [Fact]
+        public void CanIgnoreGreaterThan1000()
+        {
+            int sum = _stringCalculator.Add("1001,2");
+            Assert.Equal(2, sum);
+        }
     }
 }
