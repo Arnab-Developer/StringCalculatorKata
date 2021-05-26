@@ -54,7 +54,7 @@ namespace TestProject1
         }
 
         [Fact]
-        public void CanHandleDifferentDelimiter()
+        public void CanHandleDifferentDelimiters()
         {
             int sum = _stringCalculator.Add("//;\n1;2");
             Assert.Equal(3, sum);
@@ -77,10 +77,24 @@ namespace TestProject1
         }
 
         [Fact]
-        public void CanHandleDifferentLengthDelimiter()
+        public void CanHandleDifferentLengthDelimiters()
         {
             int sum = _stringCalculator.Add("//[|||]\n1|||2|||3");
             Assert.Equal(6, sum);
+        }
+
+        [Fact]
+        public void CanHandleMultipleDelimiters()
+        {
+            int sum = _stringCalculator.Add("//[|][%]\n1|2%3");
+            Assert.Equal(6, sum);
+        }
+
+        [Fact]
+        public void CanHandleMultipleDelimitersWithAnyLength()
+        {
+            int sum = _stringCalculator.Add("///[|]4[%]\n1|2%%3_2");
+            Assert.Equal(12, sum);
         }
     }
 }
