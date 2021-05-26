@@ -1,16 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ClassLibrary1
 {
     public class StringCalculator
     {
-        private readonly char[] _delimiters;
-
-        public StringCalculator()
-        {
-            _delimiters = new char[] { ',', '\n', ';' };
-        }
+        private const int _upperNumLimit = 1000;
 
         public int Add(string numbers)
         {
@@ -18,30 +15,35 @@ namespace ClassLibrary1
             {
                 return 0;
             }
-            
-            string[] nums = numbers.Split(_delimiters);
-            
-            if (nums.Length == 1)
+            CheckNegative(numbers);
+            IList<string> nums = Regex.Matches(numbers, @"-?[0-9]+")
+                .Select(match => match.Value)
+                .ToList();
+            if (nums.Count == 1)
             {
                 return int.Parse(nums[0]);
             }
-
-            string negetiveNumbers = string.Empty;
-            foreach (string num in nums)
-            {
-                if (int.TryParse(num, out int result) && result < 0)
-                {
-                    negetiveNumbers = string.Concat(negetiveNumbers, result, ',');
-                }
-            }
-            if (!string.IsNullOrEmpty(negetiveNumbers))
-            {
-                throw new ArgumentException($"Negatives not allowed: {negetiveNumbers.Substring(0, negetiveNumbers.Length - 1)}");
-            }
-
             return nums
-                .Select(num => int.TryParse(num, out int result) && result <= 1000 ? result : 0)
+                .Where(num => int.Parse(num) <= _upperNumLimit)
+                .Select(num => int.Parse(num))
                 .Sum();
+        }
+
+        private static void CheckNegative(string numbers)
+        {
+            List<string> negativeNums = Regex.Matches(numbers, @"-[0-9]+")
+                .Select(match => match.Value)
+                .ToList();
+            string joinedNegetiveNumbers = string.Empty;
+            foreach (string negativeNum in negativeNums)
+            {
+                joinedNegetiveNumbers = string.Concat(joinedNegetiveNumbers, negativeNum, ',');
+            }
+            if (!string.IsNullOrEmpty(joinedNegetiveNumbers))
+            {
+                throw new ArgumentException(
+                    $"Negatives not allowed: {joinedNegetiveNumbers.Substring(0, joinedNegetiveNumbers.Length - 1)}");
+            }
         }
     }
 }

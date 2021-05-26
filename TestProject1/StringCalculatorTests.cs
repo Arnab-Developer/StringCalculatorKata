@@ -1,6 +1,6 @@
-using Xunit;
 using ClassLibrary1;
 using System;
+using Xunit;
 
 namespace TestProject1
 {
@@ -74,6 +74,13 @@ namespace TestProject1
         {
             int sum = _stringCalculator.Add("1001,2");
             Assert.Equal(2, sum);
+        }
+
+        [Fact]
+        public void CanHandleDifferentLengthDelimiter()
+        {
+            int sum = _stringCalculator.Add("//[|||]\n1|||2|||3");
+            Assert.Equal(6, sum);
         }
     }
 }
