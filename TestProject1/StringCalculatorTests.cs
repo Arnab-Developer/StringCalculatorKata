@@ -51,5 +51,12 @@ namespace TestProject1
             int sum = _stringCalculator.Add("2\n4");
             Assert.Equal(6, sum);
         }
+
+        [Fact]
+        public void CanHandleDifferentDelimiter()
+        {
+            int sum = _stringCalculator.Add("//;\n1;2");
+            Assert.Equal(3, sum);
+        }        
     }
 }
